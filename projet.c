@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main(){
+    //supposons ici, 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack, (solution dynamique ?)
+    char command[1024];
+    //supposons que la commande shell peut accepter 63 arguments maximum, 64 ème est null, pour indiquer la fin
+    char *args[64];
+
+    //un shell ne s'arrête jamais tout seul, il affiche un prompt et attend une instruction
+    while(1){
+        printf("MyShell>"); // Le prompt
+
+        //fgets lit ce que l'utilisateur tapes au clavier
+        if (fgets(command, sizeof(command), stdin)== NULL) break;
+
+        //strcspn cherche la position du premier caracètre '\n' dans la chaîne, et nettoyer le '\n' à la fin, n'oublie pas, car presse sur Entrée = \n
+        command[strcspn(command, "\n")]='\0';
+
+        //Découpage des arguments (Parsing) // test
+        printf(command);
+
+    }
+    return 0;
+}

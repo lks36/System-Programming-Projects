@@ -1,0 +1,5 @@
+#OS et éditeur ide
+.DS_Store
+.idea/
+.vscode/
+*.exe
