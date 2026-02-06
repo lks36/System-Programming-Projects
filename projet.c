@@ -19,8 +19,24 @@ int main(){
         //strcspn cherche la position du premier caracètre '\n' dans la chaîne, et nettoyer le '\n' à la fin, n'oublie pas, car presse sur Entrée = \n
         command[strcspn(command, "\n")]='\0';
 
-        //Découpage des arguments (Parsing) // test
-        printf(command);
+        //Découpage des arguments (Parsing) 
+        // test
+        printf(command+'\n');
+
+        int i = 0;
+        //strtok découpe une chaîne à chaque fois qu'elle trouve le " ", ici on récupère le premier mot
+        args[i] = strtok(command," ");
+        while(args[0] != NULL){
+            //pré incrémentaion
+            args[++i] = strtok(NULL, " ");
+        }
+
+        //si la commande est vide
+        if(args[0]==NULL) continue;
+
+        //on quite 
+        if(strcomp(args[0],"exit")==0) break;
+
 
     }
     return 0;
