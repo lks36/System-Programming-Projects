@@ -19,10 +19,7 @@ int main(){
         //strcspn cherche la position du premier caracètre '\n' dans la chaîne, et nettoyer le '\n' à la fin, n'oublie pas, car presse sur Entrée = \n
         command[strcspn(command, "\n")]='\0';
 
-        //Découpage des arguments (Parsing) 
-        // test
-        printf("test : %s\n",command);
-        
+        //Découpage des arguments (Parsing)      
         int i = 0;
         //strtok découpe une chaîne à chaque fois qu'elle trouve le " ", ici on récupère le premier mot
         args[i] = strtok(command," ");
@@ -37,6 +34,11 @@ int main(){
         //on quite 
         if(strcmp(args[0],"exit")==0) break;
 
+        // 3. Test d'affichage pour vérifier le parsing
+        printf("commande : %s\n", args[0]);
+        for(int j = 1; args[j] != NULL; j++) {
+            printf("argument %d : %s\n", j, args[j]);
+        }
         //création du processus fils
 
     }
