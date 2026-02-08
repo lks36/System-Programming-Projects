@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 
 int main(){
-    //supposons ici, 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack, (solution dynamique ?)
+    //je réserves statiquement cet espace dès le lancement du programme sur stack
     char command[1024];
-    //supposons que la commande shell peut accepter 63 arguments maximum, 64 ème est null, pour indiquer la fin
+    //accepter 63 arguments maximum, 64 ème est null, pour indiquer la fin
     char *args[64];
 
     //on ne s'arrête jamais tout seul, il affiche un prompt et attend une instruction
@@ -40,6 +42,25 @@ int main(){
             printf("argument %d : %s\n", j, args[j]);
         }
         //création du processus fils
+        pid_t pid = fork();
+        if(pid == 0){
+            //on est donc dans le processus fils, on va exécuter la commande
+            //execvp prend en paramètre le nom de la commande et les arguments
+            if(execvp(args[0], args)==-1){
+                //si execvp retourne -1, cela signifie qu'il y a eu une erreur
+                perror("Erreur d'exécution");
+            }
+            exit(EXIT_FAILURE); // Terminer le processus fils en cas d'erreur
+            //le fils est mort, le fils ne reviens pas dans la boucle while du père
+        }
+        else if (pid < 0){
+            //on a eu une erreur lors de la création du processus fils
+            perror("Erreur de fork");
+        }
+        else {
+            //on est dans le processus père, on attend que le fils termine
+            wait(NULL);
+        }
 
     }
     return 0;
