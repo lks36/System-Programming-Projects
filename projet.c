@@ -58,6 +58,7 @@ int main(){
             while(args[ind]!=NULL){
                 //si l'argument commence par un $
                 if(args[ind][0]=='$'){
+                    //on met ce que contient la variable environnement dans env
                     char *env = getenv(args[ind]+1);
                     if(env){
                         printf("%s",env);
