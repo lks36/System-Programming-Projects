@@ -9,7 +9,7 @@ int main(){
     //supposons que la commande shell peut accepter 63 arguments maximum, 64 ème est null, pour indiquer la fin
     char *args[64];
 
-    //un shell ne s'arrête jamais tout seul, il affiche un prompt et attend une instruction
+    //on ne s'arrête jamais tout seul, il affiche un prompt et attend une instruction
     while(1){
         printf("MyShell>"); // Le prompt
 
@@ -21,12 +21,12 @@ int main(){
 
         //Découpage des arguments (Parsing) 
         // test
-        printf(command+'\n');
-
+        printf("test : %s\n",command);
+        
         int i = 0;
         //strtok découpe une chaîne à chaque fois qu'elle trouve le " ", ici on récupère le premier mot
         args[i] = strtok(command," ");
-        while(args[0] != NULL){
+        while(args[i] != NULL){
             //pré incrémentaion
             args[++i] = strtok(NULL, " ");
         }
@@ -35,8 +35,9 @@ int main(){
         if(args[0]==NULL) continue;
 
         //on quite 
-        if(strcomp(args[0],"exit")==0) break;
+        if(strcmp(args[0],"exit")==0) break;
 
+        //création du processus fils
 
     }
     return 0;
