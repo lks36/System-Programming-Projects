@@ -11,17 +11,18 @@ int main(){
     //accepter 63 arguments maximum, 64 ème est null, pour indiquer la fin
     char *args[64];
 
-    //on ne s'arrête jamais tout seul, il affiche un prompt et attend une instruction
+    //boucle de processus, le shell doit rester actif
     while(1){
         printf("MyShell>"); // Le prompt
 
+        //***Lecture de la commande*/
         //fgets lit ce que l'utilisateur tapes au clavier
         if (fgets(command, sizeof(command), stdin)== NULL) break;
 
         //strcspn cherche la position du premier caracètre '\n' dans la chaîne, et nettoyer le '\n' à la fin, n'oublie pas, car presse sur Entrée = \n
         command[strcspn(command, "\n")]='\0';
 
-        //Découpage des arguments (Parsing)      
+        //***Découpage des arguments (Parsing)***    
         int i = 0;
         //strtok découpe une chaîne à chaque fois qu'elle trouve le " ", ici on récupère le premier mot
         args[i] = strtok(command," ");
@@ -36,12 +37,37 @@ int main(){
         //on quite 
         if(strcmp(args[0],"exit")==0) break;
 
-        // 3. Test d'affichage pour vérifier le parsing
+        //built-in cd
+        if(strcmp(args[0],"cd")==0){
+            if(args[1]==NULL){
+                //on gère l'erreur s'il manque d'argument
+                fprintf(stderr,"MyShell: attendre un argument pour cd : ");
+            }
+            else{
+                //sinon on change répertoire
+                if(chdir(args[1])==-1){
+                    perror("MyShell : cd ");
+                }
+            }
+            //on ne fork pas, 
+            continue;
+        }
+
+        if(strcmp(args[0],"help")==0){
+            printf("---MyShell help---\n");
+            printf("Commandes intégrés : cd, exit, help\n");
+            continue;
+        }
+        
+        
+
+        //*****Test d'affichage pour vérifier le parsing*****
         printf("commande : %s\n", args[0]);
         for(int j = 1; args[j] != NULL; j++) {
             printf("argument %d : %s\n", j, args[j]);
         }
-        //création du processus fils
+
+        //****création du processus fils pour exécuter la commande****
         pid_t pid = fork();
         if(pid == 0){
             //on est donc dans le processus fils, on va exécuter la commande

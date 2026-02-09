@@ -26,6 +26,9 @@ le processus père donne des instructions au processus fils(execvp), et attendre
 supposons la commande n'a que 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack
 
 supposons la commande shell peut accepter 63 arguments maximum
+
+le cas de "built-in"
+    - cd accepte plusieurs arguments sans levé d'erreur
 ```
 
 ## Idées
