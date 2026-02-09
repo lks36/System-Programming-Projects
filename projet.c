@@ -39,17 +39,39 @@ int main(){
 
         //built-in cd
         if(strcmp(args[0],"cd")==0){
-            if(args[1]==NULL){
-                //on gère l'erreur s'il manque d'argument
-                fprintf(stderr,"MyShell: attendre un argument pour cd : ");
+            char *arg = args[1];
+            //si sans arguments, on retourne au home
+            if(arg==NULL){
+                arg=getenv("HOME");
             }
-            else{
-                //sinon on change répertoire
-                if(chdir(args[1])==-1){
-                    perror("MyShell : cd ");
+            //on change répertoire
+            if(chdir(arg)==-1){
+                perror("MyShell : cd ");
+            }
+            //on ne fork pas, sinon erreur d'execution
+            continue;
+        }
+
+        //built-in echo
+        if(strcmp(args[0],"echo")==0){
+            int ind=1;
+            while(args[ind]!=NULL){
+                //si l'argument commence par un $
+                if(args[ind][0]=='$'){
+                    char *env = getenv(args[ind]+1);
+                    if(env){
+                        printf("%s",env);
+                    }
                 }
+                else{
+                    printf("%s",args[ind]);
+                }
+                if(args[ind+1]){
+                    printf(" ");
+                }
+                ind++;
             }
-            //on ne fork pas, 
+            printf("\n");
             continue;
         }
 

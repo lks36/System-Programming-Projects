@@ -19,6 +19,15 @@ strtok n'est pas "thread-safe" dangereuse si on utilise plusieurs threads
 
 ***Création du processus fils***
 le processus père donne des instructions au processus fils(execvp), et attendre qu'il finit avant de passer à la suivante.
+
+***Architecture***
+le shell est séparé de deux catégorie:
+    - built-in : cd, exit, help
+    - commandes externes : ls, cat, grep...
+
+***execvp***
+execvp ne contient pas de built-in, il n'excute que des fichiers executables
+
 ```
 
 ## contraintes
@@ -39,5 +48,5 @@ execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
 
 ## TODO
 ```
-suite : on va faire des built-in comme cd ..., donc qu'on ne va pas crée de processus fils
+suite : on va commancer à prépater les redirections
 ```
