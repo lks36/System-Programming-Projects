@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 
 int main(){
@@ -37,6 +39,7 @@ int main(){
         //on quite 
         if(strcmp(args[0],"exit")==0) break;
 
+        //***Les built-in***/
         //built-in cd
         if(strcmp(args[0],"cd")==0){
             char *arg = args[1];
@@ -93,6 +96,22 @@ int main(){
         //****création du processus fils pour exécuter la commande****
         pid_t pid = fork();
         if(pid == 0){
+            int j = 0;
+            while(args[j]!=NULL){
+                //il faut qu'on retrouve la redirection
+                if(strcmp(args[j],">")==0){
+                    char *filename = args[j+1];
+
+                    if(filename==NULL){
+                        fprintf(stderr, "Erreur : fichier NULL");
+                        exit(EXIT_FAILURE);
+                    }
+                    //Sion, on ouvre le fichier (écriture seule, le créer s'il n'existe pas)
+                    // à faire
+                }
+            }
+
+
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments
             if(execvp(args[0], args)==-1){

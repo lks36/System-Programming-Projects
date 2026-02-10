@@ -11,5 +11,13 @@ Un shell fonctionne selon une boucle infinie appelée REPL (Read-Eval-Print Loop
 
 4. Repeat : Revenir au début.
 
+## Features
+- Process management (fork/exec)
+
+- Built-in commands (cd/exit)
+
+- Redirections (WIP).
+
+
 ## Documentation interne
 Voir [DEV_NOTES.md](./DEV_NOTES.md) pour les choix techniques et notes de développement.
