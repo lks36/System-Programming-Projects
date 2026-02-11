@@ -28,22 +28,37 @@ le shell est séparé de deux catégorie:
 ***execvp***
 execvp ne contient pas de built-in, il n'excute que des fichiers executables
 
+***open***
+utilisation de open et pas fopen:
+ - adapter dup2, car dup2 prend en paramètre un int, et open renvoie un int, et fopen non
+ - fopen utilise des permissions 0664 par défaut, open peut gérer les permissions plus en détaille
+ - danger de Buffer : fopen risque d'avoir un moment critique au moment du fork, le message sera dupliquer 2 fois et open envoie au système immédiatement. On veut que les choses se passent immédiatement et précisément là où on a branché les tuyaux.
+
 ```
 
 ## contraintes
 ```
-supposons la commande n'a que 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack
+- supposons la commande n'a que 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack
 
-supposons la commande shell peut accepter 63 arguments maximum
+- supposons la commande shell peut accepter 63 arguments maximum
 
-le cas de "built-in"
+- le cas de "built-in"
     - cd accepte plusieurs arguments sans levé d'erreur
+
+- Utilisation de execvp : les commandes externes ne sont pas codés par nous même
+
+- dup2 indispensable : on doit utiliser dup2 pour faire la fermeture de flux de sorti vers l'écran, et mettre un fichier à la place
 ```
 
 ## Idées
 ```
 ***Des built-in***
 execvp ne peut pas executer des commandes comme cd, car cela est un built-in, 
+```
+
+# Doc
+```
+
 ```
 
 ## TODO

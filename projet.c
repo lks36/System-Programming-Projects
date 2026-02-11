@@ -107,7 +107,15 @@ int main(){
                         exit(EXIT_FAILURE);
                     }
                     //Sion, on ouvre le fichier (écriture seule, le créer s'il n'existe pas)
-                    // à faire
+                    //ici, on utilise open pour obtenir le descripteur du fichier(int)
+                    //O_WRONLY:écriture seule
+                    //O_CREAT:créer le fichier s'il n'existe pas
+                    //O_TRUNC:vider le fichier s'il existe déjà
+                    //0644:permission (lecture/écriture pour moi, mais lecture seule pour les autres)
+
+                    int fd = open(filename,O_WRONLY|O_CREAT|O_TRUNC,0644);
+                    //Buffer à comprendre
+                    //à continuer
                 }
             }
 
