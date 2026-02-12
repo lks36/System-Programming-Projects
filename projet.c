@@ -115,7 +115,7 @@ int main(){
 
                     int fd = open(filename,O_WRONLY|O_CREAT|O_TRUNC,0644);
                     //Buffer à comprendre
-                    //à continuer
+                    //à continuer !!!!!!!!!!!
                 }
             }
 
