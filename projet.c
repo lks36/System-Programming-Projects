@@ -114,7 +114,8 @@ int main(){
                     //0644:permission (lecture/écriture pour moi, mais lecture seule pour les autres)
 
                     int fd = open(filename,O_WRONLY|O_CREAT|O_TRUNC,0644);
-                    //Buffer à comprendre
+                    //toujour entrain de comprendre la deff entre open et fopen
+                    //c trop dur j'ai pas compris la différence entre les deux, je vais continuer à chercher
                     
                     //à continuer !!!!!!!!!!!
                 }
