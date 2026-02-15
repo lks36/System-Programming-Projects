@@ -1,8 +1,8 @@
 # System-Programming-Projects
 
 ## Un mini interpréteur de commandes (Mini-Shell en C)
+Le projet est pour l'objectif de développer un terpréteur de commande en C, respectant la norme POSIX, le shell fonctionne selon une boucle infinie appelée REPL (Read-Eval-Print Loop)
 
-Un shell fonctionne selon une boucle infinie appelée REPL (Read-Eval-Print Loop)
 1. Read : Lire la commande tapée par l'utilisateur.
 
 2. Parse : Découper la commande (ex: "ls -l" devient ["ls", "-l"]).
@@ -11,10 +11,12 @@ Un shell fonctionne selon une boucle infinie appelée REPL (Read-Eval-Print Loop
 
 4. Repeat : Revenir au début.
 
-## Features
+## Fonctionnalités 
 - Process management (fork/exec)
 
-- Built-in commands (cd/exit)
+- Execution de commandes :
+    - Built-in commands (cd/exit/..)
+    - Commmandes externes (programmes séparés stoké dans bin/..)
 
 - Redirections (WIP).
 
