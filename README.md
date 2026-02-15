@@ -11,23 +11,13 @@ Un shell fonctionne selon une boucle infinie appelée REPL (Read-Eval-Print Loop
 
 4. Repeat : Revenir au début.
 
-```
-En C, la gestion de la mémoire est manuelle et explicite, on doit gérer la mémoire nous même.
+## Features
+- Process management (fork/exec)
 
-***Utilisation de fgets***
-Ne pas utiliser de malloc mais fgets, car pour un shell simple, la gestion statique sur la pile est plus performante et évite les fuites mémoires;
-1024 octets pour la ligne de commande et 64 pointeurs pour les argmuments couvrent la plupart des usages classique;
+- Built-in commands (cd/exit)
 
-***Cas limite***
-Erreurs de lecture : fgets comparé avec NULL vérifie si la lecture a échoué, ou si l'utilisateur a envoyé un signal de fin de fichier(EOF), sinon le programme pourrait boucler à l'infini en traitant une commande vide, strtok découpe une commande qui n'existe pas.
-
-******
-strtok utilise une variable statique interne pour mémoriser sa position dans la chaîne de caractères
-strtok n'est pas "thread-safe" dangereuse si on utilise plusieurs threads
+- Redirections (WIP).
 
 
-
-à continuer
-
-
-```
+## Documentation interne
+Voir [DEV_NOTES.md](./DEV_NOTES.md) pour les choix techniques et notes de développement.
