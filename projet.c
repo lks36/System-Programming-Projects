@@ -134,6 +134,8 @@ int main(){
                 j++;
             }
 
+            // à continuer : redirection < !
+
 
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments

@@ -67,5 +67,5 @@ execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
 
 ## TODO
 ```
-suite : on va commancer à prépater les redirections .. 
+suite : redirection < à faire 
 ```
