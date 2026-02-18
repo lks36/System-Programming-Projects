@@ -84,8 +84,6 @@ int main(){
             printf("Commandes intégrés : cd, exit, help\n");
             continue;
         }
-        
-        
 
         //*****Test d'affichage pour vérifier le parsing*****
         printf("commande : %s\n", args[0]);
@@ -98,10 +96,9 @@ int main(){
         if(pid == 0){
             int j = 0;
             while(args[j]!=NULL){
-                //il faut qu'on retrouve la redirection
+                //gestion de ">"
                 if(strcmp(args[j],">")==0){
                     char *filename = args[j+1];
-
                     if(filename==NULL){
                         fprintf(stderr, "Erreur : fichier NULL");
                         exit(EXIT_FAILURE);
@@ -112,30 +109,43 @@ int main(){
                     //O_CREAT:créer le fichier s'il n'existe pas
                     //O_TRUNC:vider le fichier s'il existe déjà
                     //0644:permission (lecture/écriture pour moi, mais lecture seule pour les autres)
-
                     int fd = open(filename,O_WRONLY|O_CREAT|O_TRUNC,0644);
 
                     if(fd<0){
                         perror("Erreur open");
                         exit(EXIT_FAILURE);
                     }
-
                     //On remplace la sortie standard (1) par notre fichier (fd)
                     dup2(fd, STDOUT_FILENO);
-
                     //On ferme le descripteur fd
                     close(fd);
-
                     // On "coupe" le tableau args pour que execvp ne voie pas le ">" et le nom du fichier
-                    args[j] = NULL;
+                    args[j] = NULL; //on coupe la commande
                     break;
-                    
+                }
+
+                //gestion de "<"
+                else if(strcmp(args[j], "<")==0){
+                    char *filename = args[j+1];
+                    if(filename == NULL){
+                        fprintf(stderr,"Erreur : fichier manquant après <\n");
+                        exit(EXIT_FAILURE);
+                    }
+                //ouverture : lecture seule
+                int fd = open(filename, O_RDONLY);
+                if(fd<0){
+                    perror("Erreur open <");
+                    exit(EXIT_FAILURE);
+                }
+
+                dup2(fd, STDIN_FILENO); //On remplace l'entrée standard
+                close(fd);
+                args[j] = NULL; //On coupe la commande
                 }
                 j++;
             }
 
-            // à continuer : redirection < !
-
+            // à continuer : on va gérer les redirections multiples
 
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments

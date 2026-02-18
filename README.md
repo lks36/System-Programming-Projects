@@ -13,23 +13,20 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 4. Repeat : Revenir au début.
 
 # Fonctionnalités 
-- Process management (fork/exec)
-
 ## Execution de commandes :
     - Built-in commands (cd/exit/..)
-    - Commmandes externes (programmes séparés stoké dans bin/..)
-    - Redirections (WIP).
+    - Commmandes externes (fork/exec - programmes séparés stoké dans bin/..)
+    - Redirections.
 
 # Installation et execution
 ## Prérequis
 
 ## Execution
-    executer le programme avec 
-    ```
-    gcc projet.c
-    ./a.out
-    ```
-    puis utilisation de mini shell
+executer le programme avec 
+```
+gcc projet.c & ./a.out
+```
+puis utilisation de mini shell
 
 # Documentation
 Voir [DEV_NOTES.md](./DEV_NOTES.md) pour les choix techniques et notes de développement.
