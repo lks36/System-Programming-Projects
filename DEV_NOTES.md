@@ -19,8 +19,7 @@ Ne pas utiliser de malloc mais fgets, car pour un shell simple, la gestion stati
 1024 octets pour la ligne de commande et 64 pointeurs pour les argmuments couvrent la plupart des usages classique;
 
 ***strtok***
-strtok utilise une variable statique interne pour mémoriser sa position dans la chaîne de caractères
-strtok n'est pas "thread-safe" dangereuse si on utilise plusieurs threads
+strtok utilise une variable statique interne pour mémoriser sa position dans la chaîne de caractères, donc strtok n'est pas "thread-safe" dangereuse si on utilise plusieurs threads
 
 ***Cas limite***
 Erreurs de lecture : fgets comparé avec NULL vérifie si la lecture a échoué, ou si l'utilisateur a envoyé un signal de fin de fichier(EOF), sinon le programme pourrait boucler à l'infini en traitant une commande vide, strtok découpe une commande qui n'existe pas.
