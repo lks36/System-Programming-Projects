@@ -95,6 +95,8 @@ int main(){
         pid_t pid = fork();
         if(pid == 0){
             int j = 0;
+            int redirection_trouvee = 0; //savoir où se coupe le tableau args
+
             while(args[j]!=NULL){
                 //gestion de ">"
                 if(strcmp(args[j],">")==0){
@@ -120,8 +122,9 @@ int main(){
                     //On ferme le descripteur fd
                     close(fd);
                     // On "coupe" le tableau args pour que execvp ne voie pas le ">" et le nom du fichier
-                    args[j] = NULL; //on coupe la commande
-                    break;
+                    if(redirection_trouvee==-1){
+                        redirection_trouvee=j;
+                    }
                 }
 
                 //gestion de "<"
@@ -140,12 +143,35 @@ int main(){
 
                 dup2(fd, STDIN_FILENO); //On remplace l'entrée standard
                 close(fd);
-                args[j] = NULL; //On coupe la commande
+                if(redirection_trouvee==-1){
+                    redirection_trouvee=j;
+                }
+                else if (strcmp(args[j],">>") == 0){
+                    if(args[j+1]==NULL){
+                        fprintf(stderr,"Erreur : fichier manquant arpès >>\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    // O_APPENDm ajout à la fin du fichier sans écrasser
+                    int fd = open(args[j+1], O_WRONLY|O_CREAT|O_APPEND, 0644);
+                    if(fd<0){
+                        perror("Erreur open >>");
+                        exit(EXIT_FAILURE);
+                    }
+                    dup2(fd, STDOUT_FILENO);
+                    close(fd);
+                    if(redirection_trouvee==-1){
+                        redirection_trouvee=j;
+                    }
                 }
                 j++;
             }
 
-            // à continuer : on va gérer les redirections multiples
+            //On coupe le tableau d'arguments au niveeau de la premieere redirection
+            if(redirection_trouvee!=-1){
+                args[redirection_trouvee]=NULL;
+            }
+
+            // à continuer : on va continuer à faire la gestion des redirections multiples
 
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments
@@ -161,8 +187,10 @@ int main(){
             perror("Erreur de fork");
         }
         else {
-            //on est dans le processus père, on attend que le fils termine
-            wait(NULL);
+            //on est dans le processus père
+            int status;
+            watpid(pid, &status, 0); //plus précis
+            // à continuer  !!!
         }
 
     }
