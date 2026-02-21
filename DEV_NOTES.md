@@ -61,7 +61,6 @@ utilisation de open et pas fopen:
 - Il y a des redirections multiples
 - La gestion de canal 2(Erreur)
 - Les redirections ne fonctionnent pas avec les built-ins
-- commande cd > dossier ne fonctionne pas
 
 ## Idées
 ```
@@ -71,5 +70,5 @@ execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
 
 ## TODO
 ```
-suite : redirection push wait to test
+suite : redirection built-in fonctionne pas
 ```
