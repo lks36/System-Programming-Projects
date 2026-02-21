@@ -2,6 +2,10 @@
 
 ## réflexions
 
+- supposons la commande n'a que 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack
+
+- supposons la commande shell peut accepter 63 arguments maximum
+
 ```
 ***Architecture***
 le shell est séparé de deux catégorie:
@@ -39,25 +43,25 @@ utilisation de open et pas fopen:
 ````
 
 
-## contraintes
-- supposons la commande n'a que 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack
+## Contraintes
 
-- supposons la commande shell peut accepter 63 arguments maximum
+- La commande shell peut accepter 63 arguments maximum
 
-- le cas de "built-in"
+- Les "built-in"
     - cd accepte plusieurs arguments sans levé d'erreur
 
 - Utilisation de execvp : les commandes externes ne sont pas codés par nous même
 
-- dup2 indispensable : on doit utiliser dup2 pour faire la fermeture de flux de sorti vers l'écran, et mettre un fichier à la place
+- Commande ***dup2*** indispensable : on doit utiliser dup2 pour faire la fermeture de flux de sorti vers l'écran, et mettre un fichier à la place
 
 ### La redirection
 - Espace : on a le redirection des flux, mais > et < ne peut pas être coller au argumenets, différent au shell classique, la commande 
     ls >fichier
  ne fonctionnera pas
-- la double redirection ne fonctionne pas
-- il y a des redirections multiples
-- la gestion de canal 2(Erreur)
+- Il y a des redirections multiples
+- La gestion de canal 2(Erreur)
+- Les redirections ne fonctionnent pas avec les built-ins
+- commande cd > dossier ne fonctionne pas
 
 ## Idées
 ```
@@ -65,12 +69,7 @@ utilisation de open et pas fopen:
 execvp ne peut pas executer des commandes comme cd, car cela est un built-in, 
 ```
 
-# Doc
-```
-
-```
-
 ## TODO
 ```
-suite : redirection multiple à faire
+suite : redirection push wait to test
 ```

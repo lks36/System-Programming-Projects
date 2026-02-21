@@ -95,7 +95,7 @@ int main(){
         pid_t pid = fork();
         if(pid == 0){
             int j = 0;
-            int redirection_trouvee = 0; //savoir où se coupe le tableau args
+            int redirection_trouvee = -1; //savoir où se coupe le tableau args
 
             while(args[j]!=NULL){
                 //gestion de ">"
@@ -134,24 +134,26 @@ int main(){
                         fprintf(stderr,"Erreur : fichier manquant après <\n");
                         exit(EXIT_FAILURE);
                     }
-                //ouverture : lecture seule
-                int fd = open(filename, O_RDONLY);
-                if(fd<0){
-                    perror("Erreur open <");
-                    exit(EXIT_FAILURE);
+                    //ouverture : lecture seule
+                    int fd = open(filename, O_RDONLY);
+                    if(fd<0){
+                        perror("Erreur open <");
+                        exit(EXIT_FAILURE);
+                    }
+
+                    dup2(fd, STDIN_FILENO); //On remplace l'entrée standard
+                    close(fd);
+                    if(redirection_trouvee==-1){
+                        redirection_trouvee=j;
+                    }
                 }
 
-                dup2(fd, STDIN_FILENO); //On remplace l'entrée standard
-                close(fd);
-                if(redirection_trouvee==-1){
-                    redirection_trouvee=j;
-                }
                 else if (strcmp(args[j],">>") == 0){
                     if(args[j+1]==NULL){
                         fprintf(stderr,"Erreur : fichier manquant arpès >>\n");
                         exit(EXIT_FAILURE);
                     }
-                    // O_APPENDm ajout à la fin du fichier sans écrasser
+                    // O_APPEND ajout à la fin du fichier sans écrasser
                     int fd = open(args[j+1], O_WRONLY|O_CREAT|O_APPEND, 0644);
                     if(fd<0){
                         perror("Erreur open >>");
@@ -171,8 +173,6 @@ int main(){
                 args[redirection_trouvee]=NULL;
             }
 
-            // à continuer : on va continuer à faire la gestion des redirections multiples
-
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments
             if(execvp(args[0], args)==-1){
@@ -188,9 +188,16 @@ int main(){
         }
         else {
             //on est dans le processus père
+            //il faut que le père sache comment le fils s'est terminé 
+            //on se prépare pour les commandes && et ||, on va attendre la fin du fils pour savoir si la commande s'est bien exécutée ou pas
             int status;
-            watpid(pid, &status, 0); //plus précis
-            // à continuer  !!!
+            waitpid(pid, &status, 0); //plus précis
+            if(WIFEXITED(status)){
+                int code_retour = WEXITSTATUS(status);
+                if(code_retour==0){
+                    //test
+                }
+            }
         }
 
     }
