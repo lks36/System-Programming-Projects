@@ -70,5 +70,5 @@ execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
 
 ## TODO
 ```
-suite : redirection built-in fonctionne pas
+suite : redirection built-in ne fonctionne pas, ainsi les pipelines à commencer 
 ```
