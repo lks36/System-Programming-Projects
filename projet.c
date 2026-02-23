@@ -55,30 +55,6 @@ int main(){
             continue;
         }
 
-        //built-in echo
-        if(strcmp(args[0],"echo")==0){
-            int ind=1;
-            while(args[ind]!=NULL){
-                //si l'argument commence par un $
-                if(args[ind][0]=='$'){
-                    //on met ce que contient la variable environnement dans env
-                    char *env = getenv(args[ind]+1);
-                    if(env){
-                        printf("%s",env);
-                    }
-                }
-                else{
-                    printf("%s",args[ind]);
-                }
-                if(args[ind+1]){
-                    printf(" ");
-                }
-                ind++;
-            }
-            printf("\n");
-            continue;
-        }
-
         if(strcmp(args[0],"help")==0){
             printf("---MyShell help---\n");
             printf("Commandes intégrés : cd, exit, help\n");
@@ -171,6 +147,38 @@ int main(){
             //On coupe le tableau d'arguments au niveeau de la premieere redirection
             if(redirection_trouvee!=-1){
                 args[redirection_trouvee]=NULL;
+            }
+
+            //détection du pipe "|"
+            int pipe_trouvee = -1;
+            for(int j=0; args[j]!=NULL; j++){
+                if(strcmp(args[j],"|") == 0){
+                    pipe_trouvee = j;
+                    break;
+                }
+            }
+
+            if(pipe_trouvee != -1){
+                //on sépare les arguments 
+                args[pipe_trouvee]=NULL; //on coupe le premier tableau d'arguments
+                char **args1 = args; //arguments pour la première commande
+
+
+                //on met un & ici pour indiquer que le tableau args2 commence à partir de args[pipe_trouvee+1]
+                char **args2 = &args[pipe_trouvee+1]; //arguments pour la deuxième commande
+
+                int fd[2];
+                if(pipe(fd)==-1){
+                    perror("erreur pipe");
+                    exit(EXIT_FAILURE);
+                }
+
+                //premier fils pour la première commande
+                if(fork()==0){
+                    //à contiuer
+                }
+
+
             }
 
             //on est donc dans le processus fils, on va exécuter la commande

@@ -60,15 +60,17 @@ utilisation de open et pas fopen:
  ne fonctionnera pas
 - Il y a des redirections multiples
 - La gestion de canal 2(Erreur)
-- Les redirections ne fonctionnent pas avec les built-ins
 
 ## Idées
 ```
 ***Des built-in***
-execvp ne peut pas executer des commandes comme cd, car cela est un built-in, 
+execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
+
+Suppression du built-in "echo", le système s'en charger, le programme /bin/echo existe déjà sur Linux, on peut éviter l'erreur du redirection avec echo
+
 ```
 
 ## TODO
 ```
-suite : redirection built-in ne fonctionne pas, ainsi les pipelines à commencer 
+suite : les pipelines commencer à continuer 
 ```
