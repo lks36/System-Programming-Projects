@@ -175,7 +175,7 @@ int main(){
 
                 //premier fils pour la première commande
                 if(fork()==0){
-                    //à contiuer
+                    //à contiuer ainsi
                 }
 
 
