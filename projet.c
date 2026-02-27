@@ -176,13 +176,6 @@ int main(){
                 //premier fils pour la première commande
                 if(fork()==0){
                     //à contiuer ainsi
-                    //on redirige la sortie standard vers l'écriture du pipe
-                    dup2(fd[1], STDOUT_FILENO);
-                    close(fd[0]); //fermer la lecture du pipe
-                    close(fd[1]); //fermer l'écriture du pipe après la redirection
-                    if(execvp(args1[0], args1)==-1){
-                        perror("Erreur d'exécution de la première commande");
-                        exit(EXIT_FAILURE);
                 }
 
 
