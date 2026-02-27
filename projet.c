@@ -175,10 +175,8 @@ int main(){
 
                 //premier fils pour la première commande
                 if(fork()==0){
-                    //à contiuer ainsi
+                    //à refaire : on doit aussi gérer les redirections dans la première commande
                 }
-
-
             }
 
             //on est donc dans le processus fils, on va exécuter la commande
