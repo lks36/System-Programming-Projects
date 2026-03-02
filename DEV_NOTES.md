@@ -10,7 +10,7 @@
 ***Architecture***
 le shell est séparé de deux catégorie:
     - built-in : cd, exit, help
-    - commandes externes : ls, cat, grep...
+    - commandes externes : ls, cat, grep... 
 
 ```
 
