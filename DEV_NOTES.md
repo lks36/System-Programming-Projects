@@ -40,6 +40,9 @@ utilisation de open et pas fopen:
  - fopen utilise des permissions 0664 par défaut, open peut gérer les permissions plus en détaille
  - danger de Buffer : fopen est une fonction de bibliothèque, l'appel système se fera après un certains traitement, et open est une fonction qui fait directement un appel système.
 
+ ***dup2***
+ redirige un flux existant vers un autre numéro (souvent 0/1/2)
+
 ````
 
 

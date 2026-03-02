@@ -167,17 +167,42 @@ int main(){
                 //on met un & ici pour indiquer que le tableau args2 commence à partir de args[pipe_trouvee+1]
                 char **args2 = &args[pipe_trouvee+1]; //arguments pour la deuxième commande
 
-                int fd[2];
+                int fd[2];//tableau avec des descripteur de fichier, fd[0] pour la lecture, fd[1] pour l'écriture
                 if(pipe(fd)==-1){
                     perror("erreur pipe");
                     exit(EXIT_FAILURE);
                 }
 
-                //premier fils pour la première commande
+                //premier fils pour la première commande (partie gauche)
                 if(fork()==0){
-                    //à refaire : on doit aussi gérer les redirections dans la première commande
+                    dup2(fd[1], STDOUT_FILENO); //redirection de la sortie standard vers l'écriture du pipe
+                    close(fd[0]); //fermer la lecture du pipe
+                    close(fd[1]); //fermer l'écriture du pipe après la redirection
+                    if(execvp(args1[0], args1)==-1){
+                        perror("Erreur d'exécution de la première commande");
+                        exit(EXIT_FAILURE);
+                    }
                 }
+
+                //deuxième fils pour la deuxième commande
+                if(fork()==0){
+                    dup2(fd[0], STDIN_FILENO); //redirection de l'entrée standard
+                    close(fd[1]); //fermer l'écriture du pipe
+                    close(fd[0]); //fermer la lecture du pipe après la redirection
+                    if(execvp(args2[0], args2)==-1){
+                        perror("Erreur d'exécution de la deuxième commande");
+                        exit(EXIT_FAILURE);
+                    }
+                }
+
+                close(fd[0]); //fermer la lecture du pipe
+                close(fd[1]); //fermer l'écriture du pipe
+                wait(NULL); //attendre la fin du premier fils
+                wait(NULL); //attendre la fin du deuxième fils
+                continue; //revenir au prompt après l'exécution des commandes en pipeline
             }
+
+            ///// à tester !!!!!!!!!!!
 
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments
