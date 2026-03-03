@@ -203,6 +203,8 @@ int main(){
             }
 
             ///// à tester !!!!!!!!!!!
+            //bug: si on tape "ls > file1 | grep txt", le ">" est traité avant le "|", alors que dans la syntaxe du shell, le pipe a une priorité plus haute que la redirection, il faut donc traiter le pipe avant les redirections
+            //bug: exit doit être traité deux fois
 
             //on est donc dans le processus fils, on va exécuter la commande
             //execvp prend en paramètre le nom de la commande et les arguments
