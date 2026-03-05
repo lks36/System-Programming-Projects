@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 200809L
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,12 +7,21 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
+
+
+// Fonction qui sera appelée automatiquement quand on fait Ctrl+C
+void gestionnaire_sigint(int sig) {
+    printf("\nMyShell>");
+    fflush(stdout); // Force l'affichage immédiat du prompt sur la nouvelle ligne
+}
 
 //cette fonction prend en paramètre le tableau d'arguments et applique les redirections, elle modifie le tableau d'arguments pour que execvp ne voit pas les redirections
 void appliquer_redirections(char **args) {
     int j = 0;
     int index_coupe = -1;
     while(args[j] != NULL) {
+        //on gère le cas ">"
         if (strcmp(args[j], ">") == 0) {
             int fd = open(args[j+1], O_WRONLY|O_CREAT|O_TRUNC, 0644);
             if (fd < 0) { 
@@ -18,10 +29,11 @@ void appliquer_redirections(char **args) {
                 perror("Erreur d'ouverture du fichier"); 
                 exit(EXIT_FAILURE);
             }
-            dup2(fd, STDOUT_FILENO); close(fd);
+            dup2(fd, STDOUT_FILENO); close(fd);//redirection de la sortie standard vers le fichier
             if(index_coupe == -1) index_coupe = j;
             
         }
+        //on gère le cas ">>"
         else if (strcmp(args[j], ">>") == 0) {
             int fd = open(args[j+1], O_WRONLY|O_CREAT|O_APPEND, 0644);
             if (fd < 0) { 
@@ -29,9 +41,10 @@ void appliquer_redirections(char **args) {
                 perror("Erreur d'ouverture du fichier"); 
                 exit(EXIT_FAILURE);
             }
-            dup2(fd, STDOUT_FILENO); close(fd);
+            dup2(fd, STDOUT_FILENO); close(fd);//redirection de la sortie standard vers le fichier en mode ajout
             if(index_coupe == -1) index_coupe = j;
         }
+        //on gère le cas "<"
         else if (strcmp(args[j], "<") == 0) {
             int fd = open(args[j+1], O_RDONLY);
             if (fd < 0) { 
@@ -39,7 +52,7 @@ void appliquer_redirections(char **args) {
                 perror("Erreur d'ouverture du fichier"); 
                 exit(EXIT_FAILURE);
             }
-            dup2(fd, STDIN_FILENO); close(fd);
+            dup2(fd, STDIN_FILENO); close(fd); // redirection de l'entrée standard vers le fichier
             if(index_coupe == -1) index_coupe = j;
         }
         j++;
@@ -51,6 +64,17 @@ void appliquer_redirections(char **args) {
 int main(){
     char command[1024];
     char *args[64];
+
+    //******************gestion des signaux******************/
+        //à comprendre plus tard !!!!!!!!
+        struct sigaction sa;
+        sa.sa_handler = gestionnaire_sigint; // on lui donne notre fonction
+        sigemptyset(&sa.sa_mask);            // on vide le masque
+        sa.sa_flags = SA_RESTART;            // on empêche fgets de planter si on fait ctrl+c
+        if (sigaction(SIGINT, &sa, NULL) == -1) {
+            perror("Erreur de sigaction");
+            exit(EXIT_FAILURE);
+        }
 
     //boucle de processus
     while(1){
@@ -78,7 +102,6 @@ int main(){
         if(strcmp(args[0],"exit")==0) break;
 
 
-        //****************Parssing***************//
         //DÉTECTION DU PIPE
         int pipe_trouvee = -1;
         for(int j=0; args[j]!=NULL; j++){
@@ -105,6 +128,7 @@ int main(){
 
             //premier fils pour la première commande (partie gauche)
             if(fork()==0){
+                signal(SIGINT, SIG_DFL);//comportement par défaut signt à comprendre
                 dup2(fd[1], STDOUT_FILENO); //redirection de la sortie standard vers l'écriture du pipe
                 close(fd[0]); //fermer la lecture du pipe
                 close(fd[1]); //fermer l'écriture du pipe après la redirection
@@ -117,6 +141,7 @@ int main(){
 
             //deuxième fils pour la deuxième commande
             if(fork()==0){
+                signal(SIGINT, SIG_DFL);//comportement par défaut signt à comprendre
                 dup2(fd[0], STDIN_FILENO); //redirection de l'entrée standard
                 close(fd[1]); //fermer l'écriture du pipe
                 close(fd[0]); //fermer la lecture du pipe après la redirection
@@ -157,19 +182,20 @@ int main(){
             continue;
         }
 
-        //******************Test d'affichage pour vérifier le parsing******************
+        //******************Test d'affichage pour vérifier le parsing******************/
         printf("commande : %s\n", args[0]);
         for(int j = 1; args[j] != NULL; j++) {
             printf("argument %d : %s\n", j, args[j]);
         }
-        //******************Fin Test d'affichage pour vérifier le parsing******************
-
+        //******************Fin Test d'affichage pour vérifier le parsing******************/
 
         //****Execute : création du processus fils pour exécuter la commande****/
         pid_t pid = fork();
         if(pid == 0){
             //dans processus fils
-            appliquer_redirections(args);
+            signal(SIGINT, SIG_DFL); //comportement par défaut signt à comprendre
+
+            appliquer_redirections(args);//rediretion
             //execvp prend en paramètre le nom de la commande et les arguments
             if(execvp(args[0], args)==-1){
                 perror("Erreur d'exécution");

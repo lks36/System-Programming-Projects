@@ -12,6 +12,7 @@ le shell est séparé de deux catégorie:
 - built-in : cd, exit, help
 - commandes externes : ls, cat, grep... 
 
+---
 
 ## Techinique
 En C, la gestion de la mémoire est manuelle et explicite, on doit gérer la mémoire nous même.
@@ -41,6 +42,7 @@ utilisation de open et pas fopen:
  ***dup2***
  redirige un flux existant vers un autre numéro (souvent 0/1/2)
 
+---
 
 ## Contraintes
 
@@ -69,6 +71,7 @@ utilisation de open et pas fopen:
 ### Pilelines
 - Les Pilepines multiples existent pas
 
+---
 
 ## Idées
 ***Des built-in***
@@ -77,11 +80,16 @@ execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
 ***Tricher***
 On va utilier les built-ins du système, le programme /bin/echo existe déjà sur Linux, on peut éviter l'erreur du redirection avec echo
 
+---
+
 ## TODO
+
+### Bugs
 - Le problème d'espace dans cd
 - Le problème d'espace dans redirection
 - implémentation de multi redirection
 - implémentaion de multi pipeline
-- Signaux à faire
+
+### Suites
 - les logique && et ||
 - le mode & 

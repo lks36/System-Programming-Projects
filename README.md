@@ -17,11 +17,14 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 4. Repeat : Revenir au début.
 ---
 ## Fonctionnalités 
-### Execution de commandes :
+### Execution de commandes:
 - Built-in commands (cd/exit/..)
 - Commmandes externes (fork/exec - programmes séparés stoké dans bin/..)
 - Redirections simples ls > fichier : cat < fichier, ls >> fichier
 - Redirections multiple simple : cat < fichier >> fichier
+
+### Gestion des signaux
+- 
 ---
 ## Installation et execution
 ### Prérequis
