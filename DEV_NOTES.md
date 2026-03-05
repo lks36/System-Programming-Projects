@@ -56,12 +56,15 @@ utilisation de open et pas fopen:
 
 - Commande ***dup2*** indispensable : on doit utiliser dup2 pour faire la fermeture de flux de sorti vers l'écran, et mettre un fichier à la place
 
+- 
+
 ### La redirection
 - Espace : on a le redirection des flux, mais > et < ne peut pas être coller au argumenets, différent au shell classique, la commande 
     ls >fichier
  ne fonctionnera pas
 - Il y a des redirections multiples
 - La gestion de canal 2(Erreur)
+
 
 ## Idées
 ```

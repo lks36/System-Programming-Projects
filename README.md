@@ -6,11 +6,12 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 
 1. Read : Lire la commande tapée par l'utilisateur.
 
-2. Parse : Découper la commande dans l'ordre :
+2. Parse : Découper la commande dans l'ordre de priorité :
     1. redirections   > >> < 2>
     2. pipeline       |
     3. logique        &&  ||
     4. séparation     ;  &
+
 3. Execute : Créer un processus enfant pour lancer la commande.
 
 4. Repeat : Revenir au début.
@@ -24,6 +25,8 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 
 ## Installation et execution
 ### Prérequis
+- Un système d'exploitation basé sur Unix (Linux, macOS, ou WSL sur Windows).
+- GCC (GNU Compiler Collection)
 
 ### Execution
 executer le programme avec 
