@@ -15,14 +15,14 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 3. Execute : Créer un processus enfant pour lancer la commande.
 
 4. Repeat : Revenir au début.
-
+---
 ## Fonctionnalités 
 ### Execution de commandes :
 - Built-in commands (cd/exit/..)
 - Commmandes externes (fork/exec - programmes séparés stoké dans bin/..)
 - Redirections simples ls > fichier : cat < fichier, ls >> fichier
 - Redirections multiple simple : cat < fichier >> fichier
-
+---
 ## Installation et execution
 ### Prérequis
 - Un système d'exploitation basé sur Unix (Linux, macOS, ou WSL sur Windows).
@@ -33,7 +33,7 @@ executer le programme avec
 ```
 gcc projet.c & ./a.out
 ```
-puis utilisation de mini shell
 
+---
 ## Documentation
 Voir [DEV_NOTES.md](./DEV_NOTES.md) pour les choix techniques et notes de développement.
