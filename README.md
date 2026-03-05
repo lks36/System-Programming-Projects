@@ -7,7 +7,7 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 1. Read : Lire la commande tapée par l'utilisateur.
 
 2. Parse : Découper la commande dans l'ordre de priorité :
-    1. redirections   > >> < 2>
+    1. redirections   > < >>
     2. pipeline       |
     3. logique        &&  ||
     4. séparation     ;  &
