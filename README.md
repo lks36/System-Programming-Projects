@@ -9,8 +9,8 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 2. Parse : Découper la commande dans l'ordre de priorité :
     1. redirections   > < >>
     2. pipeline       |
-    3. logique        &&  ||
-    4. séparation     ;  &
+    3. logique        &&  || (à faire)
+    4. séparation     ;  & (à faire)
 
 3. Execute : Créer un processus enfant pour lancer la commande.
 
@@ -18,10 +18,10 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 
 ## Fonctionnalités 
 ### Execution de commandes :
-    - Built-in commands (cd/exit/..)
-    - Commmandes externes (fork/exec - programmes séparés stoké dans bin/..)
-    - Redirections simples ls > fichier : cat < fichier, ls >> fichier
-    - Redirections multiple simple : cat < fichier >> fichier
+- Built-in commands (cd/exit/..)
+- Commmandes externes (fork/exec - programmes séparés stoké dans bin/..)
+- Redirections simples ls > fichier : cat < fichier, ls >> fichier
+- Redirections multiple simple : cat < fichier >> fichier
 
 ## Installation et execution
 ### Prérequis
