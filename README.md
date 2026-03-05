@@ -24,7 +24,9 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 - Redirections multiple simple : cat < fichier >> fichier
 
 ### Gestion des signaux
-- 
+- Ctrl+C
+
+
 ---
 ## Installation et execution
 ### Prérequis

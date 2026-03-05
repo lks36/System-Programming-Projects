@@ -182,13 +182,6 @@ int main(){
             continue;
         }
 
-        //******************Test d'affichage pour vérifier le parsing******************/
-        printf("commande : %s\n", args[0]);
-        for(int j = 1; args[j] != NULL; j++) {
-            printf("argument %d : %s\n", j, args[j]);
-        }
-        //******************Fin Test d'affichage pour vérifier le parsing******************/
-
         //****Execute : création du processus fils pour exécuter la commande****/
         pid_t pid = fork();
         if(pid == 0){
