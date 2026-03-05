@@ -74,5 +74,5 @@ Suppression du built-in "echo", le système s'en charger, le programme /bin/echo
 
 ## TODO
 ```
-suite : les pipelines commencer à continuer 
+suite : correction du Bug de Priorité (Pipe vs Redirection)
 ```

@@ -6,8 +6,11 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 
 1. Read : Lire la commande tapée par l'utilisateur.
 
-2. Parse : Découper la commande (ex: "ls -l" devient ["ls", "-l"]).
-
+2. Parse : Découper la commande dans l'ordre :
+    1. redirections   > >> < 2>
+    2. pipeline       |
+    3. logique        &&  ||
+    4. séparation     ;  &
 3. Execute : Créer un processus enfant pour lancer la commande.
 
 4. Repeat : Revenir au début.
