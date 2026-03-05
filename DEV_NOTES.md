@@ -6,15 +6,14 @@
 
 - supposons la commande shell peut accepter 63 arguments maximum
 
-```
+
 ***Architecture***
 le shell est séparé de deux catégorie:
-    - built-in : cd, exit, help
-    - commandes externes : ls, cat, grep... 
-```
+- built-in : cd, exit, help
+- commandes externes : ls, cat, grep... 
+
 
 ## Techinique
-````
 En C, la gestion de la mémoire est manuelle et explicite, on doit gérer la mémoire nous même.
 
 ***Utilisation de fgets***
@@ -42,8 +41,6 @@ utilisation de open et pas fopen:
  ***dup2***
  redirige un flux existant vers un autre numéro (souvent 0/1/2)
 
-````
-
 
 ## Contraintes
 
@@ -59,23 +56,32 @@ utilisation de open et pas fopen:
 - 
 
 ### La redirection
-- Espace : on a le redirection des flux, mais > et < ne peut pas être coller au argumenets, différent au shell classique, la commande 
+- Erreur avec les espace : on a le redirection des flux, mais > et < ne peut pas être coller au argumenets, différent au shell classique, la commande
+````
     ls >fichier
+````
  ne fonctionnera pas
-- Il y a des redirections multiples
-- La gestion de canal 2(Erreur)
+
+- Les redirections multiples n'existent pas
+
+- La gestion de canal 2(Erreur) n'existe pas
+
+### Pilelines
+- Les Pilepines multiples existent pas
 
 
 ## Idées
-```
 ***Des built-in***
 execvp ne peut pas executer des commandes comme cd, car cela est un built-in,
 
-Suppression du built-in "echo", le système s'en charger, le programme /bin/echo existe déjà sur Linux, on peut éviter l'erreur du redirection avec echo
-
-```
+***Tricher***
+On va utilier les built-ins du système, le programme /bin/echo existe déjà sur Linux, on peut éviter l'erreur du redirection avec echo
 
 ## TODO
-```
-suite : correction du Bug de Priorité (Pipe vs Redirection)
-```
+- Le problème d'espace dans cd
+- Le problème d'espace dans redirection
+- implémentation de multi redirection
+- implémentaion de multi pipeline
+- Signaux à faire
+- les logique && et ||
+- le mode & 
