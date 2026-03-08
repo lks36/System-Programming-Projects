@@ -156,7 +156,7 @@ int executer_ligne(char **args) {
         int status;
         waitpid(pid, &status, 0); //plus précis
         if(WIFEXITED(status)){
-            int code_retour = WEXITSTATUS(status);
+            code_retour = WEXITSTATUS(status);
             if(code_retour==0){
                 //test
             }
