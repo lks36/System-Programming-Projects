@@ -71,6 +71,12 @@ utilisation de open et pas fopen:
 ### Pilelines
 - Les Pilepines multiples existent pas
 
+
+### Les opérateurs logique "&&" et "||"
+- 
+
+
+
 ---
 
 ## Idées
@@ -91,5 +97,5 @@ On va utilier les built-ins du système, le programme /bin/echo existe déjà su
 - implémentaion de multi pipeline
 
 ### Suites
-- les logique && et ||
+- début de l'opérateur logique && et ||
 - le mode & 

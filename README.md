@@ -26,6 +26,9 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 ### Gestion des signaux
 - Ctrl+C
 
+### Les opérateurs logiques
+- commande1 && commande2 : commande2 ne s'exécute que si commande1 a réussi
+- commande1 || commande2 : commande2 ne s'exécute que si commande1 a échoué
 
 ---
 ## Installation et execution
