@@ -9,7 +9,7 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 2. Parse : Découper la commande dans l'ordre de priorité :
     1. redirections   > < >>
     2. pipeline       |
-    3. logique        &&  || (à faire)
+    3. logique        &&  || (en cours)
     4. séparation     ;  & (à faire)
 
 3. Execute : Créer un processus enfant pour lancer la commande.
