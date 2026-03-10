@@ -64,6 +64,22 @@ int executer_ligne(char **args) {
         }
     }
 
+    //détection des opérateurs && et ||
+    int index_op = -1;
+    int type_op = 0; // 1 pour "&&", 2 pour "||"
+
+    for (int j = 0; args[j] != NULL; j++) {
+        if (strcmp(args[j], "&&") == 0) {
+            index_op = j;
+            type_op = 1;
+            break;
+        } else if (strcmp(args[j], "||") == 0) {
+            index_op = j;
+            type_op = 2;
+            break;
+        }
+    }
+
     if(pipe_trouvee != -1) {
         //on sépare les arguments 
         args[pipe_trouvee]=NULL; //on coupe le premier tableau d'arguments
