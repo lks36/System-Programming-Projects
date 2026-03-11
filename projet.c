@@ -55,19 +55,11 @@ void appliquer_redirections(char **args) {
 
 // Fonction pour exécuter une ligne de commande (à améliorer pour gérer les redirections et les pipes)
 int executer_ligne(char **args) {
-    //Détection du pipe
-    int pipe_trouvee = -1;
-    for(int j=0; args[j]!=NULL; j++){
-        if(strcmp(args[j],"|") == 0){
-            pipe_trouvee = j;
-            break;
-        }
-    }
-
     //détection des opérateurs && et ||
     int index_op = -1;
     int type_op = 0; // 1 pour "&&", 2 pour "||"
 
+    //meme boucle que pour le pipe, mais avant pipeline, on cherche les opérateurs logiques
     for (int j = 0; args[j] != NULL; j++) {
         if (strcmp(args[j], "&&") == 0) {
             index_op = j;
@@ -77,6 +69,35 @@ int executer_ligne(char **args) {
             index_op = j;
             type_op = 2;
             break;
+        }
+    }
+
+    //Détection du pipe
+    int pipe_trouvee = -1;
+    for(int j=0; args[j]!=NULL; j++){
+        if(strcmp(args[j],"|") == 0){
+            pipe_trouvee = j;
+            break;
+        }
+    }
+
+    if (index_op != -1) {
+        // On a trouvé un opérateur ! On coupe la commande en deux.
+        args[index_op] = NULL;
+        char **args_gauche = args;
+        char **args_droite = &args[index_op + 1];
+
+        // 1. On exécute toujour la partie de gauche
+        int statut_gauche = executer_ligne(args_gauche);
+
+        // 2. On décide si on doit exécuter la partie de droite
+        if (type_op == 1 && statut_gauche == 0) {
+            //&& : la gauche a réussi, code 0
+            executer_ligne(args_droite);
+        } 
+        else if (type_op == 2 && statut_gauche != 0) {
+            //||: la gauche a échoué, code != 0
+            executer_ligne(args_droite);
         }
     }
 
