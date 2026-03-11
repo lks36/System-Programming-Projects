@@ -55,10 +55,9 @@ void appliquer_redirections(char **args) {
 
 // Fonction pour exécuter une ligne de commande (à améliorer pour gérer les redirections et les pipes)
 int executer_ligne(char **args) {
-    //détection des opérateurs && et ||
+    //détection des opérateurs && et || prioiritaire 1
     int index_op = -1;
     int type_op = 0; // 1 pour "&&", 2 pour "||"
-
     //meme boucle que pour le pipe, mais avant pipeline, on cherche les opérateurs logiques
     for (int j = 0; args[j] != NULL; j++) {
         if (strcmp(args[j], "&&") == 0) {
@@ -99,6 +98,7 @@ int executer_ligne(char **args) {
             //||: la gauche a échoué, code != 0
             executer_ligne(args_droite);
         }
+        return statut_gauche; // On retourne le code de la partie gauche, c'est la norme
     }
 
     if(pipe_trouvee != -1) {
@@ -178,6 +178,7 @@ int executer_ligne(char **args) {
         //execvp prend en paramètre le nom de la commande et les arguments
         if(execvp(args[0], args)==-1){
             perror("Erreur d'exécution");
+            _exit(127); // || détecte l'échec de la commande, 127 est le code de retour standard pour "commande introuvable"
         }
         exit(EXIT_FAILURE); // Terminer le processus fils en cas d'erreur
     }

@@ -97,5 +97,5 @@ On va utilier les built-ins du système, le programme /bin/echo existe déjà su
 - implémentaion de multi pipeline
 
 ### Suites
-- début de l'opérateur logique && et ||, à améliorer
+- opérateur logique && et || : corriger le problème de fsdfsdf || echo fichier
 - le mode & 
