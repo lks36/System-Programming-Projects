@@ -39,7 +39,8 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 ### Execution
 executer le programme avec 
 ```
-gcc projet.c & ./a.out
+gcc projet.c
+./a.out
 ```
 
 ---

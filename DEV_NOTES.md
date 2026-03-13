@@ -69,13 +69,12 @@ utilisation de open et pas fopen:
 - La gestion de canal 2(Erreur) n'existe pas
 
 ### Pilelines
+- IL faut avoir des espaces entre les | 
 - Les Pilepines multiples existent pas
 
 
 ### Les opérateurs logique "&&" et "||"
-- 
-
-
+- Il faut avoir des espaces entre les && et ||
 
 ---
 
@@ -97,5 +96,4 @@ On va utilier les built-ins du système, le programme /bin/echo existe déjà su
 - implémentaion de multi pipeline
 
 ### Suites
-- opérateur logique && et || : corriger le problème de fsdfsdf || echo fichier à faire 
-- le mode & 
+- le mode & et ;
