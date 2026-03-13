@@ -76,6 +76,9 @@ utilisation de open et pas fopen:
 ### Les opérateurs logique "&&" et "||"
 - Il faut avoir des espaces entre les && et ||
 
+### Arrière plan
+- à tester plus de bugs
+
 ---
 
 ## Idées
@@ -90,10 +93,15 @@ On va utilier les built-ins du système, le programme /bin/echo existe déjà su
 ## TODO
 
 ### Bugs
-- Le problème d'espace dans cd
-- Le problème d'espace dans redirection
+- Toujour des erreurs les espaces
+    - Le problème d'espace dans cd
+    - Le problème d'espace dans redirection
+    - Solution : problème d'architecture ?
 - implémentation de multi redirection
+    - 
 - implémentaion de multi pipeline
+    - 
+- pas de séparation : echo fi & echo fi => affichage : fi & echo fi
 
 ### Suites
-- le mode & et ;
+- les bugs à corriger

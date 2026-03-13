@@ -10,7 +10,7 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
     1. redirections   > < >>
     2. pipeline       |
     3. logique        &&  ||
-    4. séparation     ;  & (à faire)
+    4. arrière plan     &
 
 3. Execute : Créer un processus enfant pour lancer la commande.
 
@@ -29,6 +29,9 @@ Le projet est pour l'objectif de développer un terpréteur de commande en C, re
 ### Les opérateurs logiques
 - commande1 && commande2 : commande2 ne s'exécute que si commande1 a réussi
 - commande1 || commande2 : commande2 ne s'exécute que si commande1 a échoué
+
+### Arrière plan
+- simple utilisation de & : echo miniProjetShell
 
 ---
 ## Installation et execution

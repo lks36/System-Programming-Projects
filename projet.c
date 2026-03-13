@@ -92,11 +92,11 @@ int executer_ligne(char **args) {
         // 2. On décide si on doit exécuter la partie de droite
         if (type_op == 1 && statut_gauche == 0) {
             //&& : la gauche a réussi, code 0
-            executer_ligne(args_droite);
+            return executer_ligne(args_droite);
         } 
         else if (type_op == 2 && statut_gauche != 0) {
             //||: la gauche a échoué, code != 0
-            executer_ligne(args_droite);
+            return executer_ligne(args_droite);
         }
         return statut_gauche; // On retourne le code de la partie gauche, c'est la norme
     }
@@ -166,14 +166,30 @@ int executer_ligne(char **args) {
         printf("---MyShell help---\nCommandes intégrés : cd, exit, help\n");
         return 0; // Succès
     }
+
+    //**** Détection de l'arrière-plan (&) ****//
+    int arriere_plan = 0;
+    int dernier_arg = 0;
+
+    // On cherche quel est le dernier argument
+    while (args[dernier_arg] != NULL) {
+        dernier_arg++;
+    }
+    
+    // Si le dernier argument est "&"
+    if (dernier_arg > 0 && strcmp(args[dernier_arg - 1], "&") == 0) {
+        arriere_plan = 1;
+        args[dernier_arg - 1] = NULL; // On enlève le "&" pour execvp
+    }
+
     //Fork + appliquer_redirections + execvp
     //****Execute : création du processus fils pour exécuter la commande****/
     pid_t pid = fork();
     int code_retour = -1;
+    
     if(pid == 0){
         //dans processus fils
         signal(SIGINT, SIG_DFL); //comportement par défaut signt à comprendre
-
         appliquer_redirections(args);//rediretion
         //execvp prend en paramètre le nom de la commande et les arguments
         if(execvp(args[0], args)==-1){
@@ -188,19 +204,24 @@ int executer_ligne(char **args) {
     }
     //waitpid et récupération du status
     else {
-        //on est dans le processus père
-        //il faut que le père sache comment le fils s'est terminé 
-        //on se prépare pour les commandes && et ||, on va attendre la fin du fils pour savoir si la commande s'est bien exécutée ou pas
-        int status;
-        waitpid(pid, &status, 0); //plus précis
-        if(WIFEXITED(status)){
-            code_retour = WEXITSTATUS(status);
-            if(code_retour==0){
-                //test
+        if (arriere_plan == 1) {
+            // Si c'est en arrière-plan, on n'attend PAS !
+            // On affiche juste le numéro du processus (comme un vrai shell)
+            printf("[Processus en arrière-plan lancé : PID %d]\n", pid);
+        } else {
+            //on est dans le processus père
+            //il faut que le père sache comment le fils s'est terminé 
+            //on se prépare pour les commandes && et ||, on va attendre la fin du fils pour savoir si la commande s'est bien exécutée ou pas
+            int status;
+            waitpid(pid, &status, 0); //plus précis
+            if(WIFEXITED(status)){
+                code_retour = WEXITSTATUS(status);
+                if(code_retour==0){
+                    //test
+                }
             }
         }
     }
-
     return code_retour; // Retourne 0 si succès, autre chose si erreur
 }
 
@@ -226,6 +247,18 @@ int main(){
             exit(EXIT_FAILURE);
         }
     //******************************************************/
+
+    //****gestion arrière-plan****/
+    // Cette partie nettoie les processus zombies ET empêche le Shell de 
+    // crasher sur macOS quand une tâche en arrière-plan se termine !
+    struct sigaction sa_chld;
+    sa_chld.sa_handler = SIG_IGN; // On ignore la mort du fils (nettoyage auto)
+    sigemptyset(&sa_chld.sa_mask);
+    sa_chld.sa_flags = SA_RESTART; // Empêche fgets de renvoyer NULL
+    if (sigaction(SIGCHLD, &sa_chld, NULL) == -1) {
+        perror("Erreur sigaction SIGCHLD");
+    }
+    //**********************************************************/
 
     //boucle de processus
     while(1){
