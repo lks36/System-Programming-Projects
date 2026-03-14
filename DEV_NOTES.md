@@ -1,6 +1,6 @@
 # Notes de dev
 
-## réflexions
+## Réflexions
 
 - supposons la commande n'a que 1ko, je réserves statiquement cet espace dès le lancement du programme sur stack
 
@@ -46,16 +46,13 @@ utilisation de open et pas fopen:
 
 ## Contraintes
 
+### Limites
 - La commande shell peut accepter 63 arguments maximum
-
 - Les "built-in"
     - cd accepte plusieurs arguments sans levé d'erreur
-
 - Utilisation de execvp : les commandes externes ne sont pas codés par nous même
-
 - Commande ***dup2*** indispensable : on doit utiliser dup2 pour faire la fermeture de flux de sorti vers l'écran, et mettre un fichier à la place
-
-- 
+- comme j'utilise strtok(command, " ") pour coupé les commandes, donc le mini shell coupe strictement sur les espaces.
 
 ### La redirection
 - Erreur avec les espace : on a le redirection des flux, mais > et < ne peut pas être coller au argumenets, différent au shell classique, la commande
@@ -75,6 +72,7 @@ utilisation de open et pas fopen:
 
 ### Les opérateurs logique "&&" et "||"
 - Il faut avoir des espaces entre les && et ||
+- une descente récursive, mais elle évalue de gauche à droite en coupant la chaîne, dans des cas sans parenthèses (ex: cmd1 || cmd2 && cmd3), l'ordre d'exécution pourrait légèrement différer du vrai Bash
 
 ### Arrière plan
 - à tester plus de bugs
@@ -96,11 +94,9 @@ On va utilier les built-ins du système, le programme /bin/echo existe déjà su
 - Toujour des erreurs les espaces
     - Le problème d'espace dans cd
     - Le problème d'espace dans redirection
-    - Solution : problème d'architecture ?
+    - Solution : ?
 - implémentation de multi redirection
-    - 
 - implémentaion de multi pipeline
-    - 
 - pas de séparation : echo fi & echo fi => affichage : fi & echo fi
 
 ### Suites
